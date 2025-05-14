@@ -1,6 +1,6 @@
 import uuid
 from django.db import models
-from .enum import UserType
+from .enums import UserType
 
 class User (models.Model):
     id = models.UUIDField(primary_key=True, editable=False, default= uuid.uuid4())
