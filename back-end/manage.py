@@ -1,6 +1,9 @@
 import os
 import sys
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(os.path.join(BASE_DIR, 'back-end'))
+
 def main():
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "chatbot_whatsapp.settings")
     try:
