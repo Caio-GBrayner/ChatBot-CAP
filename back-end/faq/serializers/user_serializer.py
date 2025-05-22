@@ -6,7 +6,7 @@ from ..models.enums import UserType
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'user_type', 'created_at', 'password']
+        fields = ['id', 'username', 'user_type', 'password']
         extra_kwargs = {
             'password' : {'write_only': True},
             'created_at': {'read_only': True},
