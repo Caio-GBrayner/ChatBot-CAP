@@ -8,38 +8,23 @@ class User (AbstractUser):
     username = models.CharField(max_length=150, null= False, blank=False, unique=True)
     first_name = None
     last_name = None
-    email = models.EmailField(null=True, blank=True)
+    email = models.EmailField(null=True, blank=True, unique=True)
     user_type = models.CharField(max_length=2, choices=UserType.choices, default=UserType.VIEWER)
 
-    # created_at = models.DateTimeField(auto_now_add=True)
-
-    # def email(self) -> str :
-    #     return ''
-
     def save(self, *args, **kwargs):
-        if self.is_superuser:
-            self.user_type = UserType.ADMIN
-            self.is_staff = True
+        if self.user_type == UserType.ADMIN:
+            self.is_superuser=True
+
+        elif self.user_type == UserType.EDITOR:
+            self.is_staff=True
+            self.is_superuser=False
+
         else:
-            if self.user_type == UserType.ADMIN:
-                self.is_staff = True
-                self.is_superuser = True
-            elif self.user_type == UserType.EDITOR:
-                self.is_staff = True
-                self.is_superuser = False
-            else:  # Viewer
-                self.is_staff = False
-                self.is_superuser = False
+            self.is_staff=False
+            self.is_superuser=False
+        self.is_active =True
 
-        self.is_active = True
         super().save(*args, **kwargs)
-
-    # def has_perm(self, perm, obj=None):
-    #     if self.is_superuser:
-    #         return True
-    #     if self.user_type == UserType.EDITOR:
-    #         return perm in ['add', 'change', 'view']  # Editores podem ver/editar mas não deletar
-    #     return False  # Viewers só têm permissões básicas
 
     class Meta:
         swappable = 'AUTH_USER_MODEL'
